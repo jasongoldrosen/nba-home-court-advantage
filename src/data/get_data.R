@@ -11,7 +11,7 @@ game_data$date <- as.Date(game_data$date)
 game_data$playoff <- game_data$playoff == 't'
 game_data$game_uid <- 1:nrow(game_data)
 
-write.csv(game_data, file=paste0(data_loc,'nba_test.csv'),row.names=FALSE)
+write.csv(game_data, file=paste0(data_loc,'nba_game_outcomes.csv'),row.names=FALSE)
 
 
 
