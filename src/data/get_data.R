@@ -8,7 +8,7 @@ game_data <- read.csv(file_loc)
 
 # Clean up some variables
 game_data$date <- as.Date(game_data$date) 
-game_data$playoff <- game_data$playoff == 't'
+game_data$playoff <- !(game_data$playoff == '')
 game_data$game_uid <- 1:nrow(game_data)
 
 write.csv(game_data, file=paste0(data_loc,'nba_game_outcomes.csv'),row.names=FALSE)
@@ -18,10 +18,11 @@ write.csv(game_data, file=paste0(data_loc,'nba_game_outcomes.csv'),row.names=FAL
 ## NBA AIRPORT LOCATIONS
 # Note this file was created by hand
 file_loc <- '~/Documents/datasci_projects/nba-home-court-advantage/data/nba_team_history.csv'
-nba_teams <- read.csv(file_loc, nrows=1000)
-
+nba_teams <- read.csv(file_loc)
+nba_teams_since1990 <- nba_teams %>%
+  filter((is.na(end) | end >= 1990) & city != "New Orleans/Oklahoma City")
 df <- data.frame()
-for (i in unique(nba_teams[nba_teams$active,"city"])) {
+for (i in unique(nba_teams_since1990[,"city"])) {
   print(i)
   if (i %in% c("Vancouver", "Toronto")) {
     country = 'CA'
@@ -33,4 +34,6 @@ for (i in unique(nba_teams[nba_teams$active,"city"])) {
   df <- rbind(df, temp_df)
 }
 
-write.csv(df, file=paste0(data_loc,'nba_airport_locations'), row.names = FALSE)
+colnames(df) <- tolower(colnames(df))
+
+write.csv(df, file=paste0(data_loc,'nba_airport_locations.csv'), row.names = FALSE)

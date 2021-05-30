@@ -37,3 +37,6 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Jupiter notebook stuff
+.ipynb_checkpoints/
